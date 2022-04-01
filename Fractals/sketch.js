@@ -114,7 +114,7 @@ function touchStarted(){
     }
 }
 
-function mouseReleased(){
+function touchEnded(){
 	released = true;
 	return false;
 }
