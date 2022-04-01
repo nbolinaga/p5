@@ -112,9 +112,7 @@ function touchStarted(){
 }
 
 function touchEnded(){
-    if(touching == true){
-        touching = false;
-    }
+    touching = false;
 }
 
 function reset(){
