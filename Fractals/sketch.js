@@ -98,7 +98,7 @@ function run(){
     }
 }
 
-function mousePressed(){
+function touchStarted(){
     if(running === false && masters.length < 3){
         if(!(mouseX > 0 && mouseX < 200 && mouseY > 0 && mouseY < 130)){
             p = new Point(mouseX,mouseY, 20);
