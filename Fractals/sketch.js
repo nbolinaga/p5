@@ -1,5 +1,5 @@
 masters = [];
-points = []
+points = [];
 current = Point;
 next = Point; 
 let running;
@@ -38,11 +38,11 @@ function setup(){
 
 function draw(){
     background(bg);
-    fill(pc)
+    fill(pc);
     rect(0, 0, 200, 130);
     
 
-    fill(bg)
+    fill(bg);
     textSize(20);
     text(points.length, 100, 40);
     text("speed", 10, 80);
@@ -50,7 +50,7 @@ function draw(){
 
     if(running == false){
         for(let i = 0; i < masters.length; i++){
-            fill(pc)
+            fill(pc);
             masters[i].show();
         }
     }
@@ -70,7 +70,7 @@ function setRun(){
     if(masters.length > 2){
         current = masters[0];
         next = masters[1];
-        running = true
+        running = true;
     }
 }
 
@@ -82,7 +82,7 @@ function getMiddle(a, b){
 
 function startSim(){
     for(let j = 0; j < speed; j++){
-        next = getMiddle(current, next)
+        next = getMiddle(current, next);
         points.push(next);
         random = Math.floor(Math.random() * masters.length);
         current = masters[random];
@@ -91,8 +91,8 @@ function startSim(){
     stroke('red');
     line(next.x, next.y, current.x, current.y);
     for(let i = 0; i < points.length; i++){
-        stroke(pc)
-        fill(pc)
+        stroke(pc);
+        fill(pc);
         points[i].show();
         
     }
@@ -106,17 +106,23 @@ function touchStarted(){
         if(running === false && masters.length < 3){
             if(!(mouseX > 0 && mouseX < 200 && mouseY > 0 && mouseY < 130)){
                 p = new Point(mouseX,mouseY, 20);
-                masters.push(p)
+                masters.push(p);
             }
         }
-        setTimeout(1000)
+        setTimeout(1000);
         released = false;
     }
+    return true;
 }
 
 function touchEnded(){
-	released = true;
-	return false;
+  released = true;
+  if(!(mouseX > 0 && mouseX < 200 && mouseY > 0 && mouseY < 130)){
+    return false;
+  } else {
+    return true;
+  }
+
 }
 
 function reset(){
