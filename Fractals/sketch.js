@@ -98,13 +98,14 @@ function run(){
     }
 }
 
-function touchEnded(){
+function touchStarted(){
     if(running === false && masters.length < 3){
         if(!(mouseX > 0 && mouseX < 200 && mouseY > 0 && mouseY < 130)){
             p = new Point(mouseX,mouseY, 20);
             masters.push(p)
         }
     }
+    return false;
 }
 
 function reset(){
