@@ -49,8 +49,10 @@ function draw(){
     text("limit", 10, 110);
 
     if(running == false){
+        fill(pc);
+        text("click to add 3 points", width/2,  height/2);
+        text("then click run",  width/2,  height/2 + 20);
         for(let i = 0; i < masters.length; i++){
-            fill(pc);
             masters[i].show();
         }
     }
@@ -132,9 +134,20 @@ function reset(){
 }
 
 function finished(){
+    background(bg);
+    fill(pc);
+    rect(0, 0, 200, 130);
     for(let i = 0; i < points.length; i++){
         points[i].show();
     }
+    for(let i = 0; i < masters.length; i++){
+        masters[i].show();
+    }
+    fill(bg);
+    textSize(20);
+    text(points.length, 100, 40);
+    text("speed", 10, 80);
+    text("limit", 10, 110);
 }
 
 function myInputEvent() {
