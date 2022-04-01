@@ -56,7 +56,7 @@ function draw(){
     }
     
     if(running === true){
-        run();
+        startSim();
     }
 
     if(points.length >= 8000){
@@ -80,7 +80,7 @@ function getMiddle(a, b){
     return new Point(x, y, 1);
 }
 
-function run(){
+function startSim(){
     for(let j = 0; j < speed; j++){
         next = getMiddle(current, next)
         points.push(next);
@@ -96,23 +96,27 @@ function run(){
         points[i].show();
         
     }
+
+    
 }
 
 function touchStarted(){
-    if(touching == false){
+    // wait a few seconds to prevent double click
+    if(released){
         if(running === false && masters.length < 3){
             if(!(mouseX > 0 && mouseX < 200 && mouseY > 0 && mouseY < 130)){
                 p = new Point(mouseX,mouseY, 20);
                 masters.push(p)
             }
         }
-        touching = true;
+        setTimeout(1000)
+        released = false;
     }
-
 }
 
-function touchEnded(){
-    touching = false;
+function mouseReleased(){
+	released = true;
+	return false;
 }
 
 function reset(){
