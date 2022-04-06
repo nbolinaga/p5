@@ -9,6 +9,9 @@ bg = 255;
 pc = 0;
 limit = 8000; 
 speed = 50;
+let released;
+fin = false;
+moved = false;
 
 function setup(){
     createCanvas(windowWidth, windowHeight);
@@ -22,16 +25,6 @@ function setup(){
     button2.position(10, 30);
     button2.mousePressed(reset);
 
-    let inp = createInput('');
-    inp.position(80, 65);
-    inp.size(100);
-    inp.input(myInputEvent);
-
-    let inp2 = createInput('');
-    inp2.position(80, 95);
-    inp2.size(100);
-    inp2.input(myInputEvent2);
-
     running = false;
 
 }
@@ -39,16 +32,18 @@ function setup(){
 function draw(){
     background(bg);
     fill(pc);
-    rect(0, 0, 200, 130);
+    rect(0, 0, 200, 70);
     
 
     fill(bg);
     textSize(20);
     text(points.length, 100, 40);
-    text("speed", 10, 80);
-    text("limit", 10, 110);
 
-    if(running == false){
+    if(running === true){
+        startSim();
+    }
+
+    if(running == false && fin == false){
         fill(pc);
         text("click to add 3 points", width/2,  height/2);
         text("then click run",  width/2,  height/2 + 20);
@@ -57,11 +52,9 @@ function draw(){
         }
     }
     
-    if(running === true){
-        startSim();
-    }
+    
 
-    if(points.length >= 8000){
+    if(points.length >= limit){
         running = false;
         finished();
     }
@@ -110,22 +103,38 @@ function touchStarted(){
                 p = new Point(mouseX,mouseY, 20);
                 masters.push(p);
             }
+        } else if(fin === true){
+            for(let i = 0; i < masters.length; i++){
+                if(masters[i].checkPos()){
+                    masters[i].moving = true;
+                    moved = true;
+                }
+            }
+
         }
+
         setTimeout(1000);
         released = false;
+
+        
     }
     return true;
 }
 
 function touchEnded(){
   released = true;
+  for(i = 0; i < masters.length; i++){
+    masters[i].moving = false
+    moved = false
+  }
   if(!(mouseX > 0 && mouseX < 200 && mouseY > 0 && mouseY < 130)){
     return false;
   } else {
     return true;
   }
-
+  
 }
+
 
 function reset(){
     masters = [];
@@ -134,26 +143,40 @@ function reset(){
 }
 
 function finished(){
-    background(bg);
+    fin = true;
+    // background(bg);
     fill(pc);
-    rect(0, 0, 200, 130);
-    for(let i = 0; i < points.length; i++){
-        points[i].show();
+    rect(0, 0, 200, 70);
+    for(i = 0; i < masters.length; i++){
+        if(masters[i].moving){
+            masters[i].x = mouseX
+            masters[i].y = mouseY
+            }
+        if(masters[i].checkPos()){
+            cursor('grab')
+            break;
+        } else {
+            cursor('default')
+        }
     }
+    
     for(let i = 0; i < masters.length; i++){
         masters[i].show();
+    }
+    if(moved){
+        points = []
+        for(let i = 0; i < limit; i++){
+            next = getMiddle(current, next);
+            points.push(next);
+            random = Math.floor(Math.random() * masters.length);
+            current = masters[random];
+        }
+    }
+    for(let i = 0; i < points.length; i++){
+        points[i].show();
     }
     fill(bg);
     textSize(20);
     text(points.length, 100, 40);
-    text("speed", 10, 80);
-    text("limit", 10, 110);
-}
 
-function myInputEvent() {
-    speed = this.value();
-}
-
-function myInputEvent2() {
-    limit = this.value();
 }
